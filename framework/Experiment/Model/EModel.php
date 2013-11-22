@@ -11,8 +11,4 @@ abstract class EModel
      */
     public abstract static  function getInstance();
 
-    public function __construct()
-    {
-        echo "Emode works";
-    }
 }

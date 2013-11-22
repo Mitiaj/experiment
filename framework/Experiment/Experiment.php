@@ -2,6 +2,8 @@
 
 require 'Core.php';
 
+use \Experiment\Model;
+
 class Experiment extends \Experiment\Core
 {
     public function __construct()
@@ -19,7 +21,7 @@ class Experiment extends \Experiment\Core
      */
     public function run()
     {
-        $model = new \Experiment\Model\Model();
+        $model = new Model();
         $model->test();
     }
 
@@ -56,17 +58,17 @@ class Experiment extends \Experiment\Core
      */
     public static function __autoload($className)
     {
-            // follow PSR-0 to determine the class file
-            if (($pos = strrpos($className, '\\')) !== false) {
-                // namespaced class, e.g. yii\base\Component
-                $path = str_replace('\\', '/', substr($className, 0, $pos + 1))
-                    . str_replace('_', '/', substr($className, $pos + 1)) . '.php';
-            } else {
-                $path = str_replace('_', '/', $className) . '.php';
-            }
+        // follow PSR-0 to determine the class file
+        if (($pos = strrpos($className, '\\')) !== false) {
+            // namespaced class
+            $path = str_replace('\\', '/', substr($className, 0, $pos + 1))
+                . str_replace('_', '/', substr($className, $pos + 1)) . '.php';
+        } else {
+            $path = str_replace('_', '/', $className) . '.php';
+        }
 
-            if(!include(BASE_URL.'/framework/'.$path)){
-                throw new Exception($path);
-            }
+        if(!include(BASE_URL.'/framework/'.$path)){
+            throw new Exception($path.'--'.$className);
+        }
     }
 }
